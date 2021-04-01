@@ -17,6 +17,9 @@ const {dbConnection}=require('./database/config')
 //base de datos
 dbConnection();
 
+//directorio publico
+app.use( express.static('public') );
+
 //RUTAS
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/hospitales', require('./routes/hospitales'));
