@@ -13,7 +13,7 @@ const login = async (req, res=response)=>{
   try {
     
     //verificando email
-    const usuarioDB=await usuario.findOne({email});
+    const usuarioDB=await Usuario.findOne({email});
     if(!usuarioDB){
       return res.status(404).json({
         ok:false, 
@@ -33,12 +33,10 @@ const login = async (req, res=response)=>{
     //Generar el token-JWT
     const token = await generarJWT(usuarioDB.id);
 
-
     res.json({
       ok:true,
       token
     });
-
 
   } catch (error) {
     console.log(error);
@@ -98,8 +96,20 @@ const  googleSignIn=async (req, res=response)=>{
 
 };
 
+const renewToken= async (req, res=response)=>{
+  const uid=req.uid; 
+
+  //generar el jsonWEB token personalizado
+  const token = await generarJWT(uid);
+  res.json({
+    ok:true,
+    token
+  });
+};
+
 
 module.exports = {
   login,
-  googleSignIn
+  googleSignIn,
+  renewToken
 };
