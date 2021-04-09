@@ -1,5 +1,7 @@
 const express=require('express');
 require('dotenv').config();
+const path = require('path');
+
 const cors = require('cors');
 
 //crear el servidor expreess
@@ -29,7 +31,10 @@ app.use('/api/todo', require('./routes/busquedas'));
 app.use('/api/uploads', require('./routes/uploads'));
 
 
-
+//lo ultimo 
+app.get('*', (req, res)=>{
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
 
 
 app.listen(process.env.PORT, ()=>{
