@@ -5,7 +5,7 @@ Ruta: /api/usuarios
 const { Router } = require("express");
 const { check } = require("express-validator");
 const { validarCampos } = require("../middlewares/validar-campo");
-const { validarJWT } = require("../middlewares/validar-jwt");
+const { validarJWT, validarAdminRol,validarAdminRol_o_mismoUsuario } = require("../middlewares/validar-jwt");
 
 const { getUsuarios, crearUsuario, actualizarUsuario, borrarUsuario } = require("../controllers/usuarios");
 
@@ -28,6 +28,7 @@ router.put(
   "/:id",
   [
     validarJWT,
+    validarAdminRol_o_mismoUsuario,
     check("nombre", "el nombre es obligatorio").not().isEmpty(),
     check("email", "el email es obligatorio").isEmail(),
     check("role", "el role es obligatorio").not().isEmpty(),
