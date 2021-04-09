@@ -97,8 +97,12 @@ const actualizarUsuario = async (req, res=response)=>{
     }
 
     //Actualizaciones: se eliminan de campos porque nunca se usarán. 
-    //                 a pesar de lo anterior si quedan existiendo las variables google y password
-    const {password, google, ...campos} = req.body;
+    //                 a pesar de lo anterior si quedan existiendo las 
+    //                 variables google y password, la razón para sacar
+    //                 el email es porque tenemos que ver si se debe 
+    //                 actualizar porque donde sea de google no.
+    const {password, google, email, ...campos} = req.body;
+
 
     //por si no quiere actualizar el correo y evitar el salto de problema
     if(usuarioDB.email===req.body.email){
@@ -111,6 +115,17 @@ const actualizarUsuario = async (req, res=response)=>{
         return res.status(400).json({
           ok:false,
           msg:'Ya existe un usuario con ese email!'
+        });
+
+      }
+
+      //Evitando que personas logueadas con google cambien su correo
+      if(!usuarioDB.google){ //o sea no es de google entonces se le permite cambiarlo
+        campos.email=email; 
+      }else if(usuarioDB.email!==email){ //es usuario de google y en el body viene otro tipo de email
+        return res.status(400).json({
+          ok:false,
+          msg:'Usuarios de google no pueden cambiar su correo'
         });
 
       }

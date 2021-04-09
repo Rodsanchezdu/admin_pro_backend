@@ -35,6 +35,7 @@ const login = async (req, res=response)=>{
 
     res.json({
       ok:true,
+      usuario:usuarioDB,
       token
     });
 
@@ -49,7 +50,7 @@ const login = async (req, res=response)=>{
 
 const  googleSignIn=async (req, res=response)=>{
 
-  const googleToken=req.body.token; 
+  const googleToken=req.body.token;  
   
   try {
     const {name, email, picture}=await googleVerify(googleToken);
@@ -97,13 +98,16 @@ const  googleSignIn=async (req, res=response)=>{
 };
 
 const renewToken= async (req, res=response)=>{
-  const uid=req.uid; 
+  const uid=req.uid;  
+
+  const usuarioDB= await Usuario.findById(uid);
 
   //generar el jsonWEB token personalizado
   const token = await generarJWT(uid);
   res.json({
     ok:true,
-    token
+    token,
+    usuario:usuarioDB
   });
 };
 

@@ -36,7 +36,7 @@ const getDocumentosColeccion = async (req, res = response) => {
     break;
 
     case 'hospitales':
-      data = await (await Hospital.find({nombre:regex}));
+      data = await Hospital.find({nombre:regex});
                                   
     break;
 
@@ -57,19 +57,6 @@ const getDocumentosColeccion = async (req, res = response) => {
   });
 
   
-
-  const [usuarios, medicos, hospitales] = await Promise.all([
-    Usuario.find({ nombre: regex }),
-    Medico.find({ nombre: regex }),
-    Hospital.find({ nombre: regex })
-  ]);
-
-  res.json({
-    ok: true,
-    usuarios,
-    medicos, 
-    hospitales
-  });
 };
 
 
